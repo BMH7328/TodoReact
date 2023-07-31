@@ -9,7 +9,7 @@ export const AddFrom = (props) => {
               placeholder="Add new item..."
               required
             />
-            <button className={`btn btn-${props.color} btn-sm rounded ms-2`}>{props.button}</button>
+            <button onClick={`btn btn-${props.color} btn-sm rounded ms-2`}>{props.button}</button>
           </form>
         </div>
       </div>
