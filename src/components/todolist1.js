@@ -20,6 +20,7 @@ import { useState } from "react";
 // ];
 export const Add = (props) => {
   const [input, setInput] = useState("");
+  // const [checkList, setCheckList] = useState([]);
   const [list, setList] = useState([]);
   // const addButton = () => {
   //   setList([...list, input]);
@@ -30,6 +31,12 @@ export const Add = (props) => {
   //   otherList.filter(newList.id);
   //   setList(otherList);
   // };
+  // (xh method)
+  // const editButton = (id) => {
+  //   if(checkList.includes(id)) setCheckList(checkList.filter(i => i != id))
+  //   else setCheckList([...checkList,id])
+  //   console.log(checkList);
+  // }
   return (
     <div className="card rounded shadow-sm m-5">
       <div className="card-body">
@@ -43,11 +50,48 @@ export const Add = (props) => {
               className="list-group-item d-flex justify-content-between align-items-center"
               key={index}
             >
-              <div>
-                <button className="btn btn-sm btn-lignt">
-                  <i className="bi bi-square"></i>
+              {/* <div> (xh method)
+                <button className={`btn btn-sm ${(checkList.includes(item.id))? "btn-success" : "btn-light"}`} onClick={()=>editButton(item.id)}>
+                  <i className={`${(checkList.includes(item.id))? "bi bi-check-square" : "bi bi-square"}`} onClick={()=>editButton(item.id)}></i>
                 </button>
-                <span className="ms-2">{item.text}</span>
+                <span className={`ms-2 ${(checkList.includes(item.id))? "text-decoration-line-through" : " "}`} onClick={()=>editButton(item.id)}>{item.text}</span>
+              </div> */}
+              <div>
+                <button
+                onClick={() => {
+                  const newEditList = list.map((icon) => {
+                    // only update the selected icon
+                    if (icon.id === item.id) {
+                      const newIcon = { ...icon };
+                      if (icon.isCompleted === true){
+                        newIcon.isCompleted = false;
+                      }else if (icon.isCompleted === false){
+                        newIcon.isCompleted = true;
+                      }
+                      return newIcon;
+                    } else {
+                      return icon;
+                    }
+                  });
+                  setList(newEditList);
+                }}
+                  className={`btn btn-sm ${
+                    item.isCompleted ? "btn-success" : "btn-light"
+                  }`}
+                >
+                  <i
+                    className={`bi ${
+                      item.isCompleted ? "bi-check-square" : "bi-square"
+                    }`}
+                  ></i>
+                </button>
+                {item.isCompleted ? (
+                  <span className="ms-2 text-decoration-line-through">
+                    {item.text}
+                  </span>
+                ) : (
+                  <span className="ms-2">{item.text}</span>
+                )}
               </div>
               <button
                 onClick={() => {
@@ -67,8 +111,9 @@ export const Add = (props) => {
                 event.preventDefault();
                 const newList = [...list];
                 newList.push({
-                  id: newList.length + 1,
+                  id: Math.random(),
                   text: input,
+                  isCompleted: false,
                 });
                 setList(newList);
                 setInput("");
@@ -96,3 +141,11 @@ export const Add = (props) => {
     </div>
   );
 };
+  
+  
+  
+  
+  
+  
+  
+  
